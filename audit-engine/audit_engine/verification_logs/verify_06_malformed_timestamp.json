@@ -1,0 +1,62 @@
+[
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "auth_login",
+        "asset": "auth_service",
+        "record_id": "ts-ok-001",
+        "source_ip": "10.70.0.1",
+        "purpose": "valid-timestamp",
+        "result": "success"
+    },
+    {
+        "timestamp": "",
+        "actor": "compliance_auditor_sarah",
+        "role": "compliance_officer",
+        "department": "legal",
+        "action": "system_config_change",
+        "asset": "firewall_rule",
+        "record_id": "ts-empty-002",
+        "source_ip": "10.70.0.2",
+        "purpose": "missing-timestamp",
+        "result": "vulnerability_malformed_timestamp"
+    },
+    {
+        "timestamp": "2026/08/31 09:33:47",
+        "actor": "UNKNOWN_ANONYMOUS",
+        "role": "unassigned",
+        "department": "untracked",
+        "action": "grant_role",
+        "asset": "iam_policy",
+        "record_id": "ts-format-003",
+        "source_ip": "10.70.0.3",
+        "purpose": "non-iso-timestamp",
+        "result": "vulnerability_malformed_timestamp"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sre_oncall_david",
+        "role": "sre_engineer",
+        "department": "reliability",
+        "action": "break_glass_access",
+        "asset": "prod_primary_db",
+        "record_id": "ts-ok-004",
+        "source_ip": "10.70.0.4",
+        "purpose": "valid-timestamp",
+        "result": "success_session_recorded"
+    },
+    {
+        "timestamp": "NOT_A_TIMESTAMP",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "delete_audit_logs",
+        "asset": "audit_storage_db",
+        "record_id": "ts-garbage-005",
+        "source_ip": "10.70.0.5",
+        "purpose": "garbage-timestamp",
+        "result": "vulnerability_malformed_timestamp"
+    }
+]

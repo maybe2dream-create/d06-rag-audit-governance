@@ -1,0 +1,14 @@
+[
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "auth_login",
+        "asset": "auth_service",
+        "record_id": "single-001",
+        "source_ip": "10.30.0.1",
+        "purpose": "boundary-single-entry",
+        "result": "success"
+    }
+]

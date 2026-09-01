@@ -1,0 +1,74 @@
+[
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "expired_pii_access",
+        "asset": "user_archive_log",
+        "record_id": "shred-8801",
+        "source_ip": "10.60.0.1",
+        "purpose": "retention-expired-record",
+        "result": "vulnerability_unshredded_key_remanence"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "compliance_auditor_sarah",
+        "role": "compliance_officer",
+        "department": "legal",
+        "action": "auth_login",
+        "asset": "auth_service",
+        "record_id": "keep-0001",
+        "source_ip": "10.60.0.2",
+        "purpose": "control-keep",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "UNKNOWN_ANONYMOUS",
+        "role": "unassigned",
+        "department": "untracked",
+        "action": "expired_pii_access",
+        "asset": "customer_vault_db",
+        "record_id": "shred-8802",
+        "source_ip": "10.60.0.3",
+        "purpose": "retention-expired-record",
+        "result": "vulnerability_unshredded_key_remanence"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sre_oncall_david",
+        "role": "sre_engineer",
+        "department": "reliability",
+        "action": "expired_pii_access",
+        "asset": "billing_archive",
+        "record_id": "shred-8803",
+        "source_ip": "10.60.0.4",
+        "purpose": "retention-expired-record",
+        "result": "vulnerability_unshredded_key_remanence"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "grant_role",
+        "asset": "iam_policy",
+        "record_id": "keep-0002",
+        "source_ip": "10.60.0.5",
+        "purpose": "control-keep",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "compliance_auditor_sarah",
+        "role": "compliance_officer",
+        "department": "legal",
+        "action": "expired_pii_access",
+        "asset": "hr_archive_db",
+        "record_id": "shred-8804",
+        "source_ip": "10.60.0.6",
+        "purpose": "retention-expired-record",
+        "result": "vulnerability_unshredded_key_remanence"
+    }
+]

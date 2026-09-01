@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "audit-sdk"
+version = "1.0.0"
+description = "5W1H 감사 기록 SDK — append-only 적재와 감사엔진 배치 연동"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+# FastAPI 연동(audit_sdk.integrations.fastapi)을 쓸 때만 필요하다.
+# 코어(record/적재)는 표준 라이브러리만으로 동작한다.
+fastapi = ["fastapi>=0.100"]
+
+[tool.setuptools.packages.find]
+include = ["audit_sdk*"]

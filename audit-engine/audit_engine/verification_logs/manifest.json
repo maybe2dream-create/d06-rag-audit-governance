@@ -1,0 +1,159 @@
+{
+    "_comment": "src/audit_engine 파이프라인 검증용 감사로그 매니페스트",
+    "generator": "lab10_step01_schema_generator.AuditDummyGenerator",
+    "source_config": "configs/lab10_verification_generator_config.json",
+    "datasets": [
+        {
+            "name": "01_baseline_normal",
+            "file": "verify_01_baseline_normal.json",
+            "description": "정상 4건 + 5대 감사 취약점 5건 표준 혼합 데이터 (파이프라인 기준선)",
+            "targets": [
+                "Stage1 무결성",
+                "Stage2 보관정책",
+                "Stage3 암호화/파기"
+            ],
+            "expected": "5/5 PASS - 전 스테이지 정상 동작 기준선",
+            "event_count": 9,
+            "distinct_actions": [
+                "auth_login",
+                "break_glass_access",
+                "delete_audit_logs",
+                "expired_pii_access",
+                "export_pii",
+                "grant_role",
+                "system_config_change",
+                "tampered_grant_role",
+                "update_guardrail"
+            ],
+            "distinct_record_ids": 9,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": []
+        },
+        {
+            "name": "02_single_event",
+            "file": "verify_02_single_event.json",
+            "description": "이벤트 1건 최소 경계값 - 체인 길이 1, 변조 대상 인덱스 클램핑 검증",
+            "targets": [
+                "Stage1 경계값",
+                "tamper_target_index 클램핑"
+            ],
+            "expected": "5/5 PASS - 엔트리 1개 체인에서도 변조 탐지 성립",
+            "event_count": 1,
+            "distinct_actions": [
+                "auth_login"
+            ],
+            "distinct_record_ids": 1,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": []
+        },
+        {
+            "name": "03_unknown_action",
+            "file": "verify_03_unknown_action.json",
+            "description": "보관 정책에 정의되지 않은 action - Stage 2 기본 정책(default_policy) 폴백 경로 검증",
+            "targets": [
+                "Stage2 default_policy 폴백"
+            ],
+            "expected": "5/5 PASS - policy_matched=false, 기본정책 365일 적용",
+            "event_count": 4,
+            "distinct_actions": [
+                "ai_model_finetune",
+                "auth_login",
+                "edge_cache_purge",
+                "quantum_key_rotation"
+            ],
+            "distinct_record_ids": 4,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": []
+        },
+        {
+            "name": "04_no_shred_target",
+            "file": "verify_04_no_shred_target.json",
+            "description": "파기 대상 action(expired_pii_access) 미포함 - Stage 3 Crypto-Shredding SKIP 경로 검증",
+            "targets": [
+                "Stage3 파기 대상 없음 분기"
+            ],
+            "expected": "4/4 PASS - shredded_decryption_blocked 항목 SKIP 처리",
+            "event_count": 3,
+            "distinct_actions": [
+                "auth_login",
+                "grant_role",
+                "update_guardrail"
+            ],
+            "distinct_record_ids": 3,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": []
+        },
+        {
+            "name": "05_multi_shred",
+            "file": "verify_05_multi_shred.json",
+            "description": "파기 대상 다건(expired_pii_access 4건) - Stage 3 다중 Crypto-Shredding 검증",
+            "targets": [
+                "Stage3 다중 DEK 파기"
+            ],
+            "expected": "5/5 PASS - 4개 DEK 전부 파기 및 복호화 차단",
+            "event_count": 6,
+            "distinct_actions": [
+                "auth_login",
+                "expired_pii_access",
+                "grant_role"
+            ],
+            "distinct_record_ids": 6,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": []
+        },
+        {
+            "name": "06_malformed_timestamp",
+            "file": "verify_06_malformed_timestamp.json",
+            "description": "타임스탬프 누락/포맷 불량 주입 - Stage 2 파싱 예외 폴백(timestamp_valid=false) 검증",
+            "targets": [
+                "Stage2 타임스탬프 파싱 예외"
+            ],
+            "expected": "5/5 PASS - 불량 3건이 timestamp_valid=false로 기록되며 중단 없이 완주",
+            "event_count": 5,
+            "distinct_actions": [
+                "auth_login",
+                "break_glass_access",
+                "delete_audit_logs",
+                "grant_role",
+                "system_config_change"
+            ],
+            "distinct_record_ids": 5,
+            "duplicate_record_ids": 0,
+            "injected_timestamp_overrides": [
+                {
+                    "index": 1,
+                    "injected_timestamp": ""
+                },
+                {
+                    "index": 2,
+                    "injected_timestamp": "2026/08/31 09:33:47"
+                },
+                {
+                    "index": 4,
+                    "injected_timestamp": "NOT_A_TIMESTAMP"
+                }
+            ]
+        },
+        {
+            "name": "07_bulk_volume",
+            "file": "verify_07_bulk_volume.json",
+            "description": "대량 30건 - 시나리오 순환 생성에 따른 처리량 및 record_id 중복 내성 검증",
+            "targets": [
+                "전 스테이지 처리량",
+                "record_id 중복 시 DEK 키 충돌 내성"
+            ],
+            "expected": "5/5 PASS - 30건 완주, 중복 record_id 발생 상황에서의 동작 확인",
+            "event_count": 30,
+            "distinct_actions": [
+                "auth_login",
+                "break_glass_access",
+                "expired_pii_access",
+                "export_pii",
+                "grant_role"
+            ],
+            "distinct_record_ids": 5,
+            "duplicate_record_ids": 25,
+            "injected_timestamp_overrides": []
+        }
+    ]
+}

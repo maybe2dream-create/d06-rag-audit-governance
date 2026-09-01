@@ -1,0 +1,10 @@
+# 실제 secret 은 커밋하지 않는다. .env.example 만 추적한다.
+.env
+
+# 런타임 산출물
+logs/
+audit_out/
+
+__pycache__/
+*.py[cod]
+.DS_Store

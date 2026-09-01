@@ -1,0 +1,38 @@
+[
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "auth_login",
+        "asset": "auth_service",
+        "record_id": "noshred-001",
+        "source_ip": "10.50.0.1",
+        "purpose": "no-shred-target",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "compliance_auditor_sarah",
+        "role": "compliance_officer",
+        "department": "legal",
+        "action": "grant_role",
+        "asset": "iam_policy",
+        "record_id": "noshred-002",
+        "source_ip": "10.50.0.2",
+        "purpose": "no-shred-target",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "UNKNOWN_ANONYMOUS",
+        "role": "unassigned",
+        "department": "untracked",
+        "action": "update_guardrail",
+        "asset": "prompt_filter_config",
+        "record_id": "noshred-003",
+        "source_ip": "10.50.0.3",
+        "purpose": "no-shred-target",
+        "result": "success"
+    }
+]

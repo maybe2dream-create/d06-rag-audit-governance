@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pii-guard"
+version = "1.0.0"
+description = "개인정보·민감정보 탐지 및 통제 — 학습 데이터·추론 로그·피드백 로그"
+requires-python = ">=3.9"
+dependencies = []
+
+[tool.setuptools.packages.find]
+include = ["pii_guard*"]

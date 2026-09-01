@@ -1,0 +1,45 @@
+{
+  "_comment": "개인정보·민감정보 통제 정책 — 데이터 클래스 × 심각도 → 조치",
+  "_how_to_use": {
+    "1_통제_전체_ON_OFF": "enabled 를 false 로 두면 탐지·통제를 모두 끈다. 통제 전/후 대조 실험에 쓴다.",
+    "2_조치_종류": "allow=그대로 둠, mask=값 가림, pseudonymize=HMAC 토큰으로 치환(동일값 동일토큰), drop=완전 삭제, block=데이터 자체 거부",
+    "3_학습데이터_차단": "classes.training_data.CRITICAL 을 block 으로 바꾸면 주민등록번호·카드번호가 든 문서는 색인 자체를 거부한다.",
+    "4_가명처리_키": ".env 의 PII_PSEUDONYM_KEY 로 고정 키를 주입해야 재실행 간에도 같은 토큰이 나온다."
+  },
+  "enabled": true,
+  "classes": {
+    "training_data": {
+      "_comment": "RAG 지식 문서. 차단이 아니라 마스킹이 기본이다 - 차단하면 문서가 통째로 검색에서 사라져 RAG 가 무력해진다. PII 만 가리고 문서는 쓴다.",
+      "CRITICAL": "mask",
+      "HIGH": "mask",
+      "MEDIUM": "mask",
+      "LOW": "allow"
+    },
+    "inference_log": {
+      "_comment": "app.log / security.log. 평문 파일이라 암호화도 파기도 되지 않는다. 원문을 남기지 않는 것이 원칙이다.",
+      "CRITICAL": "mask",
+      "HIGH": "mask",
+      "MEDIUM": "pseudonymize",
+      "LOW": "allow"
+    },
+    "feedback_log": {
+      "_comment": "사용자 자유입력. 무엇이 들어올지 모른다. 가명처리로 재식별은 막고 통계는 살린다.",
+      "CRITICAL": "mask",
+      "HIGH": "mask",
+      "MEDIUM": "pseudonymize",
+      "LOW": "allow"
+    },
+    "audit_event": {
+      "_comment": "감사 이벤트(audit_out/*.jsonl). 평문 로그가 아니라 감사엔진 입력이다. Stage 3 에서 DEK 암호화되고 Crypto-Shredding 대상이므로 여기서 마스킹하면 오히려 파기 검증과 사후 조사가 불가능해진다. 통제 주체가 다르다.",
+      "CRITICAL": "allow",
+      "HIGH": "allow",
+      "MEDIUM": "allow",
+      "LOW": "allow"
+    }
+  },
+  "enforced_classes": [
+    "inference_log",
+    "feedback_log"
+  ],
+  "_enforced_comment": "스캔 종료 코드 판정 대상. 이 클래스들은 통제 후 CRITICAL 0건이어야 한다. training_data 는 원본 말뭉치라 PII 가 있는 것이 정상이고(적재 시점에 통제한다), audit_event 는 암호화·파기로 통제된다."
+}

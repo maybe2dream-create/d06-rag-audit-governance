@@ -1,0 +1,88 @@
+{
+  "_comment": "접근 통제 정책 — 자산 등록부(RBAC 등급 + ABAC 부서)와 role 정책. 등록되지 않은 것은 deny-by-default.",
+  "_how_to_use": {
+    "1_집행_모드": "enforcement_mode 를 'enforce' 로 바꾸면 거부 시 응답을 차단한다. 기본 'observe' 는 기록만 하고 통과시킨다(관찰 전용).",
+    "2_등급_서열": "public < internal < confidential < restricted. role.clearance 가 asset.classification 보다 낮으면 거부한다.",
+    "3_부서_제한": "asset.allowed_departments 에 없는 department 는 거부한다 (ABAC).",
+    "4_미등록": "assets 또는 roles 에 없는 값은 deny-by-default 로 거부된다. internal_incident 는 이 동작을 확인하려고 일부러 등록하지 않았다."
+  },
+  "enforcement_mode": "observe",
+  "assets": {
+    "_comment": "rag_doc:<doc_id> 형식. internal_incident 는 의도적으로 미등록 상태다.",
+    "rag_doc:weather": {
+      "classification": "public",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "untracked", "hr", "legal", "nowhere"]
+    },
+    "rag_doc:product": {
+      "classification": "public",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "untracked", "hr", "legal", "nowhere"]
+    },
+    "rag_doc:policy": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    },
+    "rag_doc:hr_salary": {
+      "classification": "confidential",
+      "owner_department": "hr",
+      "allowed_departments": ["hr", "legal"]
+    },
+    "rag_doc:customer_pii": {
+      "classification": "restricted",
+      "owner_department": "legal",
+      "allowed_departments": ["legal"]
+    },
+    "llm:gemini-2.5-flash": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    },
+    "llm:stub-local": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    },
+    "agent:tool_rag": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    },
+    "agent:tool_direct_answer": {
+      "classification": "public",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "untracked", "hr", "legal", "nowhere"]
+    },
+    "agent:tool_list_documents": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    },
+    "agent:tool_document_summary": {
+      "classification": "internal",
+      "owner_department": "ai-platform",
+      "allowed_departments": ["ai-platform", "hr", "legal"]
+    }
+  },
+  "roles": {
+    "_comment": "clearance = 이 role 이 접근 가능한 최고 등급. allowed_actions 가 비어 있으면 액션 제한 없음.",
+    "rag_user": {
+      "clearance": "internal",
+      "allowed_actions": ["agent_query", "retrieval", "llm_call", "agent_result"]
+    },
+    "guest": {
+      "clearance": "public",
+      "allowed_actions": ["agent_query", "retrieval", "agent_result"],
+      "_note": "guest 는 llm_call 권한이 없다 — 외부 모델로 데이터가 나가는 행위를 막는다."
+    },
+    "employee": {
+      "clearance": "internal",
+      "allowed_actions": ["agent_query", "retrieval", "llm_call", "agent_result"]
+    },
+    "compliance_officer": {
+      "clearance": "confidential",
+      "allowed_actions": ["agent_query", "retrieval", "llm_call", "agent_result"]
+    }
+  }
+}

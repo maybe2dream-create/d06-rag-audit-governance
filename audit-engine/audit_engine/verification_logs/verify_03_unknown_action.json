@@ -1,0 +1,50 @@
+[
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sec_admin_mike",
+        "role": "security_admin",
+        "department": "platform-security",
+        "action": "quantum_key_rotation",
+        "asset": "hsm_cluster",
+        "record_id": "unknown-001",
+        "source_ip": "10.40.0.1",
+        "purpose": "undefined-policy-path",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "compliance_auditor_sarah",
+        "role": "compliance_officer",
+        "department": "legal",
+        "action": "ai_model_finetune",
+        "asset": "ml_training_pipeline",
+        "record_id": "unknown-002",
+        "source_ip": "10.40.0.2",
+        "purpose": "undefined-policy-path",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "UNKNOWN_ANONYMOUS",
+        "role": "unassigned",
+        "department": "untracked",
+        "action": "edge_cache_purge",
+        "asset": "cdn_edge_node",
+        "record_id": "unknown-003",
+        "source_ip": "10.40.0.3",
+        "purpose": "undefined-policy-path",
+        "result": "success"
+    },
+    {
+        "timestamp": "2026-08-31T07:36:03Z",
+        "actor": "sre_oncall_david",
+        "role": "sre_engineer",
+        "department": "reliability",
+        "action": "auth_login",
+        "asset": "auth_service",
+        "record_id": "known-004",
+        "source_ip": "10.40.0.4",
+        "purpose": "control-group",
+        "result": "success"
+    }
+]
